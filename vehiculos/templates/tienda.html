@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Productos</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'img/iconocabezademanzana.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/estilos.css' %}" rel="stylesheet">
+    <style>
+        .card {
+            height: 100%;
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2> Tienda </h2><br>
+        <div class="row">
+            <div class="col-12">
+                {% include "carrito.html" %}
+            </div>
+            <div class="col-12">
+                <div class="row" style="padding: 5px 0;">
+                    {% for auto in autitos %}
+                        <div class="col-3">
+                            <h2>           </h2><br><br>
+                            <div class="card text-center">
+                                {% if auto.imagen %}
+                                    <img src="{{ auto.imagen.url }}" class="card-img-top mx-auto">
+                                {% else %}
+                                    <img src="{% static 'img/sinfoto.webp' %}" class="card-img-top mx-auto">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-weight:bold;"> Código : {{ auto.patente }}</h5>
+                                    <p class="card-text">
+                                        Marca : {{ auto.marca }}<br>
+                                        Modelo: {{ auto.modelo }}<br>
+                                        Precio:$ {{ auto.precio }}<br>
+                                    </p>
+                                    <a href="{% url 'agregar' auto.patente %}" class="btn btn-danger">Agregar al carro</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                            </div>
+                            <div class="row" style="padding: 5px 0;">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% if autitos.has_other_pages %}
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="Paginación">
+                        <ul class="pagination justify-content-center">
+                            {% if autitos.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">Primera</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ autitos.previous_page_number }}">Anterior</a>
+                                </li>
+                            {% endif %}
+                            {% for i in autitos.paginator.page_range %}
+                                {% if autitos.number == i %}
+                                    <li class="page-item active" aria-current="page">
+                                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if autitos.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ autitos.next_page_number }}">Siguiente</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ autitos.paginator.num_pages }}">Última</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

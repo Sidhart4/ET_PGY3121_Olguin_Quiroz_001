@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Productos</title>
+    {% load static %}
+</head>
+<body>
+    <div class="container">
+        <h2> Vehiculos </h2><br>
+
+        <div class="row">
+            {% for auto in autitos %}
+            <div class="col-8 col-md-4">
+                <div class="card text-center">
+                    {% if auto.imagen %}
+                        <img src="{{ auto.imagen.url }}" class="card-img-top mx-auto">
+                    {% else %}
+                        <img src="{% static 'img/sinfoto.webp' %}" class="card-img-top mx-auto">
+                    {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title"> Código : {{ auto.patente }}</h4>
+                        <p class="card-text">
+                            Marca : {{ auto.marca }}<br>
+                            Modelo: {{ auto.modelo }}<br>
+                        </p>
+                        <a href="{% url 'login' %}" class="btn btn-warning">Agregar</a>
+                        <a href="{% url 'index' %}" class="btn btn-success">Inicio</a>
+                      
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

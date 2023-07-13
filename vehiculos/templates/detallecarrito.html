@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Compra</title>
+    {% load static %}
+</head>
+<body>
+    <div class="container">
+        <h3>Detalle de Compra</h3>
+        <h6>Fecha: {{ fecha }}</h6>
+        <h6>Don/a: {{ request.user.first_name }} {{ request.user.last_name }}</h6>
+        <h6>Usuario: {{ request.user.username }}</h6>
+        <h6>Correo electronico: {{ request.user.email }}</h6>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Código Boleta</th>
+                    <th>Código Producto</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prod in productos %}
+                    <tr>
+                        <td>{{ prod.id_boleta }}</td>
+                        <td>{{ prod.id_producto }}</td>
+                        <td>{{ prod.cantidad }}</td>
+                        <td>{{ prod.subtotal }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4"><h6>19% impuesto: ${{ impuesto|floatformat:0 }} (este impuesto ya esta sumando al costo del producto)</h6></td>
+                </tr>
+                <tr>
+                    <td colspan="4"><h6>Total Compra: ${{ total }}</h6></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                            <h6>Costo de Envío: $4000</h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <h6>Total con Envío: ${{ total_con_envio }}</h6>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}
